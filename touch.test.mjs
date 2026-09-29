@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {Game} from './engine.mjs';
+import {moveToColumn} from './touch.mjs';
+const g=new Game(10,900,'local'),b=g.boards[0];
+b.active={x:2,y:3,cells:[{x:0,y:0,n:2},{x:1,y:0,n:3},{x:2,y:0,n:4}]};
+moveToColumn(g,0,7);assert.equal(b.active.x,5);
+moveToColumn(g,0,-2);assert.equal(b.active.x,0);
+b.g[3][4]={n:6};moveToColumn(g,0,7);assert.equal(b.active.x,1);
+assert.equal(b.g.flat().filter(Boolean).length,1);
+g.drop(0);assert.equal(b.g.flat().filter(Boolean).length,4);
+assert.equal(moveToColumn(g,0,0),false);
+console.log('PASS: touch edge clamping, obstruction, preview without placement, single drop');
